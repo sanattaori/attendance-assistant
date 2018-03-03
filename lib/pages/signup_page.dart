@@ -28,6 +28,11 @@ class SignupPageState extends State<SignupPage> {
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
 
+  //hero
+
+
+
+
   //keys
   bool _autovalidate = false;
   bool _formWasEdited = false;
@@ -65,10 +70,11 @@ class SignupPageState extends State<SignupPage> {
     String _validateName(String value) {
       _formWasEdited = true;
       if (value.isEmpty)
-        return 'Name is required.';
-      final RegExp nameExp = new RegExp(r'^[A-Za-z ]+$');
-      if (!nameExp.hasMatch(value))
-        return 'Please enter only alphabetical characters.';
+        return 'Email is required.';
+      String r = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+      final RegExp emailExp = new RegExp(r);
+      if (!emailExp.hasMatch(value))
+        return 'Please enter Valid Email';
       return null;
     }
 
@@ -86,14 +92,110 @@ class SignupPageState extends State<SignupPage> {
 
     @override
     Widget build(BuildContext context) {
+
+      // hero center
+      var decoratedBox = new DecoratedBox(
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              fit: BoxFit.fitWidth,
+              image: new AssetImage('assets/logos/professor.jpg'),
+            ),
+            shape: BoxShape.circle,
+          )
+      );
+      var hero = new Hero(
+        tag: 'hero-tag-llama',
+        child: decoratedBox,
+      );
+
+      var center = new Center(
+        child: new Container(
+          height: 100.0,
+          width: 100.0,
+          child: hero,
+        ),);
+
+
+
+
      return new Scaffold(
        key: _scaffoldKey,
        appBar: new AppBar(
          title: const Text("Register"),
-
        ),
+       backgroundColor: Colors.white70,
+       body: new SafeArea(
+           top: false,
+           bottom: false,
+           child: new Form(
+             key: _formKey,
+             autovalidate: _autovalidate,
+             child: new ListView(
+               padding: new EdgeInsets.all(20.0),
+               children: <Widget>[
+                 center,
+                 new TextFormField(
+                    decoration: new InputDecoration(
+                      icon: new Icon(Icons.person),
+                      hintText: 'Enter Email',
+                      labelText: 'Email',
 
+                    ),
+                   keyboardType: TextInputType.emailAddress,
+                   onSaved: (String value) {email_pass.email = value;},
+                   validator: _validateName,
+                 ),
+                 //new Padding(padding: new EdgeInsets.symmetric(vertical: 20.0)),
+                 new TextFormField(
+                   key: _passwordFieldKey,
+                   decoration: new InputDecoration(
+                     icon: new Icon(Icons.lock),
+                     hintText: 'Enter password',
+                     labelText: 'Password',
+                   ),
+                   obscureText: true,
+                   onSaved: (String value) {
+                     email_pass.password = value;
+                   },
+
+                 ),
+                 new TextFormField(
+                   decoration: new InputDecoration(
+                     icon: new Icon(null),
+                     hintText: 'How do you log in?',
+                     labelText: 'Re-type Password *',
+                   ),
+                   obscureText: true,
+                   onFieldSubmitted: (String value) { _handleSubmitted(); },
+                   validator: _validatePassword,
+                 ),
+                 new Container(
+                   padding: const EdgeInsets.all(20.0),
+                   alignment: Alignment.center,
+                   child: new RaisedButton(
+                     child: const Text('SUBMIT'),
+                     onPressed: _handleSubmitted,
+                   ),
+                 ),
+
+
+
+               ],
+             ),
+           )
+       ),
      );
     }
 
+
+  void _handleSubmitted() {
+    final FormState form = _formKey.currentState;
+    if (!form.validate()) {
+      _autovalidate = true; // Start validating on every change.
+      showInSnackBar('Please fix the errors in red before submitting.');
+    } else {
+      form.save();
+      showInSnackBar('${email_pass.email}\'s phone number is ${email_pass.password}');
+    }
+  }
 }
