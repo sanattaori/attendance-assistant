@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:attendance_assistant/pages/sign_in_page.dart';
+//import 'package:attendance_assistant/pages/sign_in_page.dart';
 import 'package:attendance_assistant/pages/signup_page.dart';
 
 class LandingPage extends StatelessWidget {
 //  var routes = <String, WidgetBuilder> {
 //    "/signup_page": (BuildContext context) => new SignupPage()
 //  };
-  int value;
+  //int value;
 
 
   @override
@@ -16,11 +16,12 @@ class LandingPage extends StatelessWidget {
         decoration: new BoxDecoration(
           image: new DecorationImage(
             fit: BoxFit.fitWidth,
-            image: new AssetImage('assets/logos/professor.jpg'),
+            image: new AssetImage('assets/logos/stu.jpg'),
           ),
           shape: BoxShape.circle,
         )
     );
+
 
     // hero top left
     var hero = new Hero(
@@ -29,10 +30,40 @@ class LandingPage extends StatelessWidget {
     );
 
     var _children = <Widget>[
-      new Container(
-        height: 50.0,
-        width: 50.0,
-        child: hero,
+      new Center(
+        child: new Container(
+          height: 150.0,
+          width: 150.0,
+          child: hero,
+        ),
+      ),
+    ];
+
+    var decoratedBox2 = new DecoratedBox(
+
+        decoration: new BoxDecoration(
+          image: new DecorationImage(
+            fit: BoxFit.fitWidth,
+            image: new AssetImage('assets/logos/professor.jpg'),
+          ),
+          shape: BoxShape.circle,
+        )
+    );
+
+
+    // hero top left
+    var hero2 = new Hero(
+      tag: 'hero-tag-llama2',
+      child: decoratedBox2,
+    );
+
+    var _children2 = <Widget>[
+      new Center(
+        child: new Container(
+          height: 150.0,
+          width: 150.0,
+          child: hero2,
+        ),
       ),
     ];
 
@@ -46,11 +77,12 @@ class LandingPage extends StatelessWidget {
               color: Colors.yellowAccent,
               // ignore: invocation_of_non_function
               child: new InkWell(
-                onTap: ()=>  Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new SignupPage())),
+                onTap: ()=>  Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new SignupPage(value: "2",))),
                 child: new Center(
                   child: new Container(
                       child: new Column(
-                        
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: _children,
                       ),
                   ),
                 ),
@@ -63,11 +95,12 @@ class LandingPage extends StatelessWidget {
                   color: Colors.deepOrangeAccent,
                   // ignore: invocation_of_non_function
                   child: new InkWell(
-                    onTap: ()=>  Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new SignupPage())),
+                    onTap: ()=>  Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new SignupPage(value: "1",))),
                     child: new Center(
                       child: new Container(
                           child: new Column(
-                            children: _children,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: _children2,
                           )
                       ),
                     ),

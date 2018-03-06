@@ -2,43 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 
+import 'package:flutter/scheduler.dart';
+
 String error = "";
 
 class PersonData {
-  String name = '';
-  String phoneNumber = '';
   String email = '';
   String password = '';
 }
 
-class SignupPage extends StatefulWidget {
+//final String value="";
 
-  int value;
-  SignupPage({ Key key }) : super(key: key);
+class SignupPage extends StatefulWidget {
+  final String value;
+
+  //final int value;
+
+  //SignupPage({ this.value, Key key }) : super(key: key);
+  const SignupPage({
+    Key key,
+    this.value ,
+  }) :super(key: key);
+
+
+
+  //final String value;
 
   @override
-  SignupPageState createState() => new SignupPageState();
+  SignupPageState createState() => new SignupPageState(value);
 }
 
 class SignupPageState extends State<SignupPage> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+  //final int value = new SignupPage().value;
   PersonData email_pass = new PersonData();
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
-
-  //hero
-
-
-
-
-  //keys
   bool _autovalidate = false;
   bool _formWasEdited = false;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final GlobalKey<FormFieldState<String>> _passwordFieldKey = new GlobalKey<
       FormFieldState<String>>();
+
+  String value;
+
+  SignupPageState(this.value);
+
+
 
   //show Snackbar
   void showInSnackBar(String value) {
@@ -90,10 +101,13 @@ class SignupPageState extends State<SignupPage> {
     }
 
 
+
+
+
+
     @override
     Widget build(BuildContext context) {
-
-      // hero center
+      timeDilation = 5.0;
       var decoratedBox = new DecoratedBox(
           decoration: new BoxDecoration(
             image: new DecorationImage(
@@ -104,7 +118,7 @@ class SignupPageState extends State<SignupPage> {
           )
       );
       var hero = new Hero(
-        tag: 'hero-tag-llama',
+        tag: 'hero-tag-llama2',
         child: decoratedBox,
       );
 
@@ -115,7 +129,27 @@ class SignupPageState extends State<SignupPage> {
           child: hero,
         ),);
 
+      // hero center
+      var decoratedBox2 = new DecoratedBox(
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              fit: BoxFit.fitWidth,
+              image: new AssetImage('assets/logos/stu.jpg'),
+            ),
+            shape: BoxShape.circle,
+          )
+      );
+      var hero2 = new Hero(
+        tag: 'hero-tag-llama',
+        child: decoratedBox2,
+      );
 
+      var center2 = new Center(
+        child: new Container(
+          height: 100.0,
+          width: 100.0,
+          child: hero2,
+        ),);
 
 
      return new Scaffold(
@@ -123,7 +157,7 @@ class SignupPageState extends State<SignupPage> {
        appBar: new AppBar(
          title: const Text("Register"),
        ),
-       backgroundColor: Colors.white70,
+       backgroundColor: value == "1" ? Colors.orangeAccent : Colors.yellow ,
        body: new SafeArea(
            top: false,
            bottom: false,
@@ -133,13 +167,12 @@ class SignupPageState extends State<SignupPage> {
              child: new ListView(
                padding: new EdgeInsets.all(20.0),
                children: <Widget>[
-                 center,
+                 value == "1" ? center:center2,
                  new TextFormField(
                     decoration: new InputDecoration(
                       icon: new Icon(Icons.person),
                       hintText: 'Enter Email',
                       labelText: 'Email',
-
                     ),
                    keyboardType: TextInputType.emailAddress,
                    onSaved: (String value) {email_pass.email = value;},
@@ -162,8 +195,8 @@ class SignupPageState extends State<SignupPage> {
                  new TextFormField(
                    decoration: new InputDecoration(
                      icon: new Icon(null),
-                     hintText: 'How do you log in?',
-                     labelText: 'Re-type Password *',
+                     hintText: 'Enter password again',
+                     labelText: 'Re-type Password ',
                    ),
                    obscureText: true,
                    onFieldSubmitted: (String value) { _handleSubmitted(); },
@@ -195,7 +228,7 @@ class SignupPageState extends State<SignupPage> {
       showInSnackBar('Please fix the errors in red before submitting.');
     } else {
       form.save();
-      showInSnackBar('${email_pass.email}\'s phone number is ${email_pass.password}');
+      showInSnackBar('${email_pass.email}\'s password is ${email_pass.password}');
     }
   }
 }
