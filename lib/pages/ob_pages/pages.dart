@@ -1,12 +1,14 @@
+import 'package:attendance_assistant/pages/landing_page.dart';
 import 'package:flutter/material.dart';
 //TODO : (Ravi) Modify new assets images and hero icons
 final pages = [
   new PageViewModel(
-      const Color(0xFF678FB4),
+      const Color(0xFFF57C00),
       'assets/ob/img_ob_att.png',
       'Transforming Attendance System',
       'Now taking Attendance made easy, Store and manage Attendance data securly stored in digital account',
-      'assets/ob/img_ob_att.png'
+      'assets/ob/img_ob_att.png',
+      false
   ),
   new PageViewModel(
       const Color(0xFF65B0B4),
@@ -14,20 +16,22 @@ final pages = [
       'Build for Students and Teachers',
       'Directly Share Class Notes and materials, helping student share code and get guidance',
       //TODO : add more content
-      'assets/ob/img_ob_att.png'
+      'assets/ob/img_ob_att.png',
+      false
   ),
   new PageViewModel(
-    const Color(0xFF9B90BC),
+    const Color(0xFF8E24AA),
     'assets/ob/img_ob_att.png',
     'Easily Track attendance',
     'Detailed Analysis made and Statics report avaliable even save as xml offine',
     'assets/ob/img_ob_att.png',
+    true
   ),
 ];
 
 class Page extends StatelessWidget {
 
-  final PageViewModel viewModel;
+  PageViewModel viewModel;
   final double percentVisible;
 
   Page({
@@ -37,6 +41,7 @@ class Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return new Container(
       padding: new EdgeInsets.all(25.0),
         width: double.INFINITY,
@@ -75,7 +80,7 @@ class Page extends StatelessWidget {
                 new Transform(
                   transform: new Matrix4.translationValues(0.0, 30.0 * (1.0 - percentVisible), 0.0),
                   child: new Padding(
-                    padding: new EdgeInsets.only(bottom: 75.0),
+                    padding: new EdgeInsets.only(bottom: 30.0),
                     child: new Text(
                       viewModel.body,
                       
@@ -87,6 +92,15 @@ class Page extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                new Transform(
+                  transform: new Matrix4.translationValues(0.0, 30.0 * (1.0 - percentVisible), 0.0),
+                  child:
+                    viewModel.val ? new RaisedButton(
+                      onPressed: ()=>  Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new LandingPage())),
+                      child: new Text('Get Started!'),
+                    ): null,
+                  ),
               ]
           ),
         )
@@ -100,6 +114,7 @@ class PageViewModel {
   final String title;
   final String body;
   final String iconAssetPath;
+  final bool val;
 
   PageViewModel(
       this.color,
@@ -107,5 +122,7 @@ class PageViewModel {
       this.title,
       this.body,
       this.iconAssetPath,
+      this.val,
+
       );
 }

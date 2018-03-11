@@ -120,6 +120,7 @@ class PageBubble extends StatelessWidget {
           child: new Opacity(
             opacity: viewModel.activePercent,
 
+            // ignore: conflicting_dart_import
             child: new Image.asset(
               viewModel.iconAssetPath,
               color: viewModel.color,

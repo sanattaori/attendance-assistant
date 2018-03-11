@@ -94,16 +94,13 @@ class SignupPageState extends State<SignupPage> {
       final FormFieldState<String> passwordField = _passwordFieldKey
           .currentState;
       if (passwordField.value == null || passwordField.value.isEmpty)
-        return 'Please choose a password.';
+        return 'Please choose a password';
+      if (passwordField.value.length < 8)
+        return 'Enter minimum 8 characters';
       if (passwordField.value != value)
         return 'Passwords don\'t match';
       return null;
     }
-
-
-
-
-
 
     @override
     Widget build(BuildContext context) {
