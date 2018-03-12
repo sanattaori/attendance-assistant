@@ -104,7 +104,7 @@ class SignupPageState extends State<SignupPage> {
 
     @override
     Widget build(BuildContext context) {
-      timeDilation = 5.0;
+      timeDilation = 2.0;
       var decoratedBox = new DecoratedBox(
           decoration: new BoxDecoration(
             image: new DecorationImage(
@@ -193,30 +193,28 @@ class SignupPageState extends State<SignupPage> {
                    decoration: new InputDecoration(
                      icon: new Icon(null),
                      hintText: 'Enter password again',
-                     labelText: 'Re-type Password ',
+                     labelText: 'Re-type Password',
                    ),
                    obscureText: true,
                    onFieldSubmitted: (String value) { _handleSubmitted(); },
                    validator: _validatePassword,
                  ),
+                 new Padding(padding: new EdgeInsets.only(bottom: 20.0)),
                  new Container(
-                   padding: const EdgeInsets.all(20.0),
+                   //padding: const EdgeInsets.all(20.0),
                    alignment: Alignment.center,
                    child: new RaisedButton(
-                     child: const Text('SUBMIT'),
+                     child: const Text('Register/Login'),
                      onPressed: _handleSubmitted,
+                     splashColor: value == "1" ? Colors.orangeAccent : Colors.yellow,
                    ),
                  ),
-
-
-
                ],
              ),
            )
        ),
      );
     }
-
 
   void _handleSubmitted() {
     final FormState form = _formKey.currentState;
@@ -225,7 +223,51 @@ class SignupPageState extends State<SignupPage> {
       showInSnackBar('Please fix the errors in red before submitting.');
     } else {
       form.save();
-      showInSnackBar('${email_pass.email}\'s password is ${email_pass.password}');
+      //showInSnackBar('${email_pass.email}\'s password is ${email_pass.password}');
+
+      _signup()
+          // ignore: strong_mode_uses_dynamic_as_bottom
+          .then((FirebaseUser user) {
+            //print(user);
+            //showInSnackBar(user.toString());
+
+          })
+          .catchError((e) {
+            //showInSnackBar(e.message);
+            debugPrint(e.toString());
+            if(e.message=='The email address is already in use by another account.') {
+              // ignore: strong_mode_uses_dynamic_as_bottom
+              _login().then((FirebaseUser user) {
+              })
+              .catchError((e) {
+                showInSnackBar(e.message);
+              });
+            }
+          });
     }
   }
+
+  Future _signup() async {
+
+    FirebaseUser auth = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email_pass.email, password: email_pass.password);
+    showInSnackBar("Signup successful!");
+
+//    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+//    await firebaseAuth
+//        .createUserWithEmailAndPassword(
+//        email: email_pass.email, password: email_pass.password);
+//    showInSnackBar("Signup Successful!");
+  }
+
+  Future _login() async {
+    FirebaseUser user = await FirebaseAuth
+        .instance.signInWithEmailAndPassword(email: email_pass.email,
+        password: email_pass.password);
+    debugPrint(user.toString());
+    showInSnackBar("Login successful!");
+    //showInSnackBar(user.toString());
+    debugPrint(email_pass.password.toString());
+  }
+
 }

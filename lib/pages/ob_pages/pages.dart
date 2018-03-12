@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'package:attendance_assistant/pages/landing_page.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 //TODO : (Ravi) Modify new assets images and hero icons
 final pages = [
   new PageViewModel(
@@ -97,7 +100,10 @@ class Page extends StatelessWidget {
                   transform: new Matrix4.translationValues(0.0, 30.0 * (1.0 - percentVisible), 0.0),
                   child:
                     viewModel.val ? new RaisedButton(
-                      onPressed: ()=>  Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new LandingPage())),
+                      onPressed: () {
+                        loadOnce();
+                        Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new LandingPage()));
+                        },
                       child: new Text('Get Started!'),
                     ): null,
                   ),
@@ -105,6 +111,11 @@ class Page extends StatelessWidget {
           ),
         )
     );
+  }
+
+  Future loadOnce() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('LoadOB', true);
   }
 }
 

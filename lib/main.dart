@@ -1,8 +1,14 @@
+import 'dart:async';
+
+import 'package:attendance_assistant/pages/landing_page.dart';
 import 'package:attendance_assistant/pages/onboarding.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+
+void main() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(new MaterialApp(
-    home: new Onboarding(),
+    home: prefs.getBool('LoadOB') != null ? new LandingPage() : new Onboarding(),
   ));
 }
