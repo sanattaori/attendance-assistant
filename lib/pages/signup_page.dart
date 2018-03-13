@@ -1,3 +1,4 @@
+import 'package:attendance_assistant/pages/attendance_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
@@ -230,29 +231,34 @@ class SignupPageState extends State<SignupPage> {
           .then((FirebaseUser user) {
             //print(user);
             //showInSnackBar(user.toString());
+            //Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new LandingPage()));
 
           })
           .catchError((e) {
-            //showInSnackBar(e.message);
-            debugPrint(e.toString());
-            if(e.message=='The email address is already in use by another account.') {
-              // ignore: strong_mode_uses_dynamic_as_bottom
-              _login().then((FirebaseUser user) {
-              })
-              .catchError((e) {
-                showInSnackBar(e.message);
-              });
-            }
+            showInSnackBar(e.message);
+
           });
     }
   }
 
   Future _signup() async {
+    try {
+      FirebaseUser auth = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+          email: email_pass.email, password: email_pass.password);
+      showInSnackBar("Signup successful!");
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new AttendanceScreen(auth)));
 
-    FirebaseUser auth = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email_pass.email, password: email_pass.password);
-    showInSnackBar("Signup successful!");
-
+    } catch (e) {
+      debugPrint(e.toString());
+      if(e.message=='The email address is already in use by another account.') {
+          //_login();
+        _login().catchError((e) {
+          showInSnackBar(e.message);
+        });
+      }
+    }
+    //
 //    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 //    await firebaseAuth
 //        .createUserWithEmailAndPassword(
@@ -266,8 +272,8 @@ class SignupPageState extends State<SignupPage> {
         password: email_pass.password);
     debugPrint(user.toString());
     showInSnackBar("Login successful!");
+    Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new AttendanceScreen(user)));
     //showInSnackBar(user.toString());
     debugPrint(email_pass.password.toString());
   }
-
 }
