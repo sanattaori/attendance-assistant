@@ -260,9 +260,10 @@ class SignupPageState extends State<SignupPage> {
           .createUserWithEmailAndPassword(
           email: email_pass.email, password: email_pass.password);
       showInSnackBar("Signup successful!");
+      loadOnce(auth);
       //# TODO Set auth and user values along with token to preferences.
       Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new AttendanceScreen()));
-      loadOnce(auth);
+
     } catch (e) {
       debugPrint(e.toString());
       showInSnackBar(e.message);
@@ -290,9 +291,10 @@ class SignupPageState extends State<SignupPage> {
 
       debugPrint(user.toString());
       showInSnackBar("Login successful!");
+      loadOnce(user);
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
           builder: (BuildContext context) => new AttendanceScreen()));
-      loadOnce(user);
+
     } catch (e) {
       showInSnackBar(e.message);
     }
@@ -317,8 +319,8 @@ class SignupPageState extends State<SignupPage> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('Auth', true);
-//    prefs.setString('email', user.email.toString());
-//    prefs.setString('User', user.toString());
+    prefs.setString('email', user.email.toString());
+    prefs.setString('User', user.uid.toString());
 //    prefs.setString('token', user.token.toString());
 //    debugPrint('run success');
   }

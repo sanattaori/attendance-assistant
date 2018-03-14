@@ -12,7 +12,7 @@ void main() {
   runApp(new MaterialApp(
     //TODO login Preference
 //    home: prefs.getBool('LoadOB') != null ? new LandingPage() : new Onboarding(),
-  home: email == null ? new AttendanceScreen(): new Onboarding(),
+  home: email != null ? new Onboarding() : new AttendanceScreen(),
   ));
 }
 
