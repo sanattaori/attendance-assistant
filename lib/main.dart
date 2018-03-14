@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:attendance_assistant/pages/attendance_screen.dart';
 import 'package:attendance_assistant/pages/landing_page.dart';
 import 'package:attendance_assistant/pages/onboarding.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  debugPrint(prefs.getBool('Auth').toString());
   runApp(new MaterialApp(
-    home: prefs.getBool('LoadOB') != null ? new LandingPage() : new Onboarding(),
+    //TODO login Preference
+    home: // prefs.getBool('LoadOB') != null ? new LandingPage() : (prefs.getBool('Auth') ? new AttendanceScreen(null) : new Onboarding()),
+    prefs.getBool('LoadOB') != null ? new LandingPage() : new Onboarding(),
   ));
 }

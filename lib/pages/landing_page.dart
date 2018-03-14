@@ -89,7 +89,6 @@ class LandingPage extends StatelessWidget {
               ),
             )
             ),
-
             new Expanded(
                 child: new Material(
                   color: Colors.deepOrangeAccent,

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 
 import 'package:flutter/scheduler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 String error = "";
 
@@ -155,7 +156,7 @@ class SignupPageState extends State<SignupPage> {
        appBar: new AppBar(
          title: const Text("Register"),
        ),
-       backgroundColor: value == "1" ? Colors.orangeAccent : Colors.yellow ,
+       backgroundColor: value == "1" ? Colors.deepOrangeAccent : Colors.yellow ,
        body: new SafeArea(
            top: false,
            bottom: false,
@@ -201,19 +202,31 @@ class SignupPageState extends State<SignupPage> {
                    validator: _validatePassword,
                  ),
                  new Padding(padding: new EdgeInsets.only(bottom: 20.0)),
-                 new Container(
-                   //padding: const EdgeInsets.all(20.0),
-                   alignment: Alignment.center,
-                   child: new RaisedButton(
-                     child: const Text('Register/Login'),
-                     onPressed: _handleSubmitted,
-                     splashColor: value == "1" ? Colors.orangeAccent : Colors.yellow,
-                   ),
-                 ),
-               ],
+                 new Row(
+                   children: <Widget>[
+                     new Container(
+                       alignment: Alignment.center,
+                         child: new RaisedButton(
+                           child: const Text('Register'),
+                           onPressed: _handleSubmitted,
+                           splashColor: value == "1" ? Colors.deepOrangeAccent : Colors.yellow,
+                         ),
+                       ),
+                      new Padding(padding: new EdgeInsets.only(left: 100.0)),
+                      new Container(
+                      alignment: Alignment.center,
+                      child: new RaisedButton(
+                      child: const Text('Login'),
+                      onPressed: _handleLogin,
+                      splashColor: value == "1" ? Colors.deepOrangeAccent : Colors.yellow,
+                    ),
+                  ),
+                ],
              ),
-           )
+            ],
+           ),
        ),
+       )
      );
     }
 
@@ -247,15 +260,18 @@ class SignupPageState extends State<SignupPage> {
           .createUserWithEmailAndPassword(
           email: email_pass.email, password: email_pass.password);
       showInSnackBar("Signup successful!");
+      //# TODO Set auth and user values along with token to preferences.
       Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new AttendanceScreen(auth)));
-
+      loadOnce(auth);
     } catch (e) {
       debugPrint(e.toString());
+      showInSnackBar(e.message);
       if(e.message=='The email address is already in use by another account.') {
+        showInSnackBar('Try to signup with different account');
           //_login();
-        _login().catchError((e) {
-          showInSnackBar(e.message);
-        });
+//        _login().catchError((e) {
+//          showInSnackBar(e.message);
+//        });
       }
     }
     //
@@ -267,13 +283,42 @@ class SignupPageState extends State<SignupPage> {
   }
 
   Future _login() async {
-    FirebaseUser user = await FirebaseAuth
-        .instance.signInWithEmailAndPassword(email: email_pass.email,
-        password: email_pass.password);
-    debugPrint(user.toString());
-    showInSnackBar("Login successful!");
-    Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new AttendanceScreen(user)));
+    try {
+      FirebaseUser user = await FirebaseAuth
+          .instance.signInWithEmailAndPassword(email: email_pass.email,
+          password: email_pass.password);
+
+      debugPrint(user.toString());
+      showInSnackBar("Login successful!");
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(
+          builder: (BuildContext context) => new AttendanceScreen(user)));
+      loadOnce(user);
+    } catch (e) {
+      showInSnackBar(e.message);
+    }
     //showInSnackBar(user.toString());
-    debugPrint(email_pass.password.toString());
+    //debugPrint(email_pass.password.toString());
+  }
+
+  void _handleLogin() {
+    final FormState form = _formKey.currentState;
+    if (!form.validate()) {
+      _autovalidate = true; // Start validating on every change.
+      showInSnackBar('Please fix the errors in red before submitting.');
+    } else {
+      form.save();
+      _login().catchError((e) {
+        //showInSnackBar(e.message);
+      });
+    }
+  }
+
+  Future loadOnce(user) async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('Auth', true);
+    prefs.setString('email', user.email.toString());
+    prefs.setString('User', user.toString());
+    debugPrint('run success');
   }
 }
