@@ -7,12 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-void main() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  debugPrint(prefs.getBool('Auth').toString());
+void main() {
+  var email = runthis();
   runApp(new MaterialApp(
     //TODO login Preference
-    home: // prefs.getBool('LoadOB') != null ? new LandingPage() : (prefs.getBool('Auth') ? new AttendanceScreen(null) : new Onboarding()),
-    prefs.getBool('LoadOB') != null ? new LandingPage() : new Onboarding(),
+//    home: prefs.getBool('LoadOB') != null ? new LandingPage() : new Onboarding(),
+  home: email == null ? new AttendanceScreen(): new Onboarding(),
   ));
+}
+
+Future runthis() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String email = prefs.getString('email').toString();
+  debugPrint(email);
+  return email;
 }

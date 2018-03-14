@@ -14,6 +14,7 @@ class Onboarding extends StatefulWidget {
 
 class _MyHomePageState extends State<Onboarding> with TickerProviderStateMixin {
 
+  // ignore: close_sinks
   StreamController<SlideUpdate> slideUpdateStream;
   AnimatedPageDragger animatedPageDragger;
 

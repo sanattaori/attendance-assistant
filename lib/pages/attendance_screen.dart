@@ -5,8 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class AttendanceScreen extends StatelessWidget {
-  FirebaseUser auth;
-  AttendanceScreen(this.auth);
+//  FirebaseUser auth;
+//  AttendanceScreen(this.auth);
 
   @override
   Widget build(BuildContext context) {

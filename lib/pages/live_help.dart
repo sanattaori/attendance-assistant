@@ -15,6 +15,7 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(title: new Text("Get Live Help")),
+      
     );
   }
 }

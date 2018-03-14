@@ -248,7 +248,7 @@ class SignupPageState extends State<SignupPage> {
 
           })
           .catchError((e) {
-            showInSnackBar(e.message);
+            //showInSnackBar(e.message);
 
           });
     }
@@ -261,7 +261,7 @@ class SignupPageState extends State<SignupPage> {
           email: email_pass.email, password: email_pass.password);
       showInSnackBar("Signup successful!");
       //# TODO Set auth and user values along with token to preferences.
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new AttendanceScreen(auth)));
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new AttendanceScreen()));
       loadOnce(auth);
     } catch (e) {
       debugPrint(e.toString());
@@ -291,7 +291,7 @@ class SignupPageState extends State<SignupPage> {
       debugPrint(user.toString());
       showInSnackBar("Login successful!");
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) => new AttendanceScreen(user)));
+          builder: (BuildContext context) => new AttendanceScreen()));
       loadOnce(user);
     } catch (e) {
       showInSnackBar(e.message);
@@ -317,8 +317,9 @@ class SignupPageState extends State<SignupPage> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('Auth', true);
-    prefs.setString('email', user.email.toString());
-    prefs.setString('User', user.toString());
-    debugPrint('run success');
+//    prefs.setString('email', user.email.toString());
+//    prefs.setString('User', user.toString());
+//    prefs.setString('token', user.token.toString());
+//    debugPrint('run success');
   }
 }
