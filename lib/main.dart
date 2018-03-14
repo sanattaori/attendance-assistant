@@ -7,18 +7,25 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-void main() {
-  var email = runthis();
-  runApp(new MaterialApp(
-    //TODO login Preference
-//    home: prefs.getBool('LoadOB') != null ? new LandingPage() : new Onboarding(),
-  home: email != null ? new Onboarding() : new AttendanceScreen(),
-  ));
+//void main() {
+//  runApp(new MaterialApp(
+//    //TODO login Preference
+////    home: prefs.getBool('LoadOB') != null ? new LandingPage() : new Onboarding(),
+//
+//
+//  ));
+//}
+getCookie() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String cookie = prefs.getString('email') ?? '';
+  debugPrint(cookie.toString());
+  if (cookie == ''){
+    runApp(new Onboarding());
+  } else {
+    runApp(new AttendanceScreen());
+  }
 }
 
-Future runthis() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String email = prefs.getString('email').toString();
-  debugPrint(email);
-  return email;
+void main() {
+  getCookie();
 }

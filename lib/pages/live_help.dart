@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 
-class LiveHelp extends StatelessWidget {
+class LiveHelp extends StatefulWidget {
+  LiveHelpState createState()=> new LiveHelpState();
+}
+
+class LiveHelpState extends State<LiveHelp>{
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: "Get Live Help",
-      home: new ChatScreen(),
-    );
-  }
-}
-
-class ChatScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
+      home: new Scaffold(
       appBar: new AppBar(title: new Text("Get Live Help")),
-      
+      body: new Text("test"),
+      ),
     );
   }
 }

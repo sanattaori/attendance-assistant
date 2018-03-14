@@ -102,7 +102,7 @@ class Page extends StatelessWidget {
                     viewModel.val ? new RaisedButton(
                       onPressed: () {
                         loadOnce();
-                        Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new LandingPage()));
+                        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new LandingPage()));
                         },
                       child: new Text('Get Started!'),
                     ): null,
