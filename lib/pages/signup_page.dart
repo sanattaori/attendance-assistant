@@ -316,7 +316,7 @@ class SignupPageState extends State<SignupPage> {
   }
 
   Future loadOnce(user) async {
-
+    debugPrint(user.toString()+ "token:");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('Auth', true);
     prefs.setString('email', user.email.toString());

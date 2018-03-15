@@ -14,6 +14,7 @@ class AttendanceScreenState extends State<AttendanceScreen> {
   Widget build(BuildContext context) {
     return new MaterialApp(
         home: new Scaffold(
+
           appBar: new AppBar(
               title: new Text("Attendance Page"),
               actions: <Widget>[
