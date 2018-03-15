@@ -289,6 +289,7 @@ class SignupPageState extends State<SignupPage> {
           .instance.signInWithEmailAndPassword(email: email_pass.email,
           password: email_pass.password);
 
+
       debugPrint(user.toString());
       showInSnackBar("Login successful!");
       loadOnce(user);
