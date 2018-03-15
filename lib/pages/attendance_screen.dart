@@ -22,10 +22,9 @@ class AttendanceScreenState extends State<AttendanceScreen> {
                 new IconButton(
                     icon: new Icon(Icons.help),
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                          builder: (BuildContext context) => new LiveHelp()));
-                      }
-                    ),
+                      Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new LiveHelp()));
+                    }
+                ),
               ],
           ),
         )

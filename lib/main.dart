@@ -20,9 +20,9 @@ getCookie() async {
   String cookie = prefs.getString('email') ?? '';
   debugPrint(cookie.toString());
   if (cookie == ''){
-    runApp(new Onboarding());
+    runApp(new MaterialApp(home: new Onboarding(),));
   } else {
-    runApp(new AttendanceScreen());
+    runApp(new MaterialApp(home: new AttendanceScreen(),));
   }
 }
 
