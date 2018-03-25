@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:attendance_assistant/pages/attendance_screen.dart';
 import 'package:attendance_assistant/pages/ob_pages/page_dragger.dart';
 import 'package:attendance_assistant/pages/ob_pages/page_reveal.dart';
 import 'package:attendance_assistant/pages/ob_pages/pager_indicator.dart';
 import 'package:attendance_assistant/pages/ob_pages/pages.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class Onboarding extends StatefulWidget {
 
@@ -82,34 +85,36 @@ class _MyHomePageState extends State<Onboarding> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new Stack(
-        children: [
-          new Page(
-            viewModel: pages[activeIndex],
-            percentVisible: 1.0,
-          ),
-          new PageReveal(
-            revealPercent: slidePercent,
-            child: new Page(
-              viewModel: pages[nextPageIndex],
-              percentVisible: slidePercent,
+    return new MaterialApp(
+      home: new Scaffold(
+        body: new Stack(
+          children: [
+            new Page(
+              viewModel: pages[activeIndex],
+              percentVisible: 1.0,
             ),
-          ),
-          new PagerIndicator(
-            viewModel: new PagerIndicatorViewModel(
-              pages,
-              activeIndex,
-              slideDirection,
-              slidePercent,
+            new PageReveal(
+              revealPercent: slidePercent,
+              child: new Page(
+                viewModel: pages[nextPageIndex],
+                percentVisible: slidePercent,
+              ),
             ),
-          ),
-          new PageDragger(
-            canDragLeftToRight: activeIndex > 0,
-            canDragRightToLeft: activeIndex < pages.length - 1,
-            slideUpdateStream: this.slideUpdateStream,
-          ),
-        ],
+            new PagerIndicator(
+              viewModel: new PagerIndicatorViewModel(
+                pages,
+                activeIndex,
+                slideDirection,
+                slidePercent,
+              ),
+            ),
+            new PageDragger(
+              canDragLeftToRight: activeIndex > 0,
+              canDragRightToLeft: activeIndex < pages.length - 1,
+              slideUpdateStream: this.slideUpdateStream,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -14,6 +14,7 @@ final pages = [
       false
   ),
   new PageViewModel(
+
       const Color(0xFF65B0B4),
       'assets/ob/img_ob_att.png',
       'Build for Students and Teachers',

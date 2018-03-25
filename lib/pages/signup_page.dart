@@ -1,4 +1,5 @@
 import 'package:attendance_assistant/pages/attendance_screen.dart';
+import 'package:attendance_assistant/pages/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
@@ -9,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 String error = "";
 
 class PersonData {
+  String name = '';
   String email = '';
   String password = '';
 }
@@ -16,7 +18,7 @@ class PersonData {
 //final String value="";
 
 class SignupPage extends StatefulWidget {
-  final String value;
+  final int value;
 
   //final int value;
 
@@ -47,7 +49,7 @@ class SignupPageState extends State<SignupPage> {
   final GlobalKey<FormFieldState<String>> _passwordFieldKey = new GlobalKey<
       FormFieldState<String>>();
 
-  String value;
+  int value;
 
   SignupPageState(this.value);
 
@@ -80,7 +82,7 @@ class SignupPageState extends State<SignupPage> {
     }
   }
 
-    String _validateName(String value) {
+    String _validateEmail(String value) {
       _formWasEdited = true;
       if (value.isEmpty)
         return 'Email is required.';
@@ -88,6 +90,17 @@ class SignupPageState extends State<SignupPage> {
       final RegExp emailExp = new RegExp(r);
       if (!emailExp.hasMatch(value))
         return 'Please enter Valid Email';
+      return null;
+    }
+
+    String _validateName(String value) {
+      _formWasEdited = true;
+      if (value.isEmpty)
+        return 'Name is required.';
+      String r = "([a-zA-Z]{3,30}\s*)+";
+      final RegExp emailExp = new RegExp(r);
+      if (!emailExp.hasMatch(value))
+        return 'Please enter Valid Name';
       return null;
     }
 
@@ -156,7 +169,7 @@ class SignupPageState extends State<SignupPage> {
        appBar: new AppBar(
          title: const Text("Register"),
        ),
-       backgroundColor: value == "1" ? Colors.deepOrangeAccent : Colors.yellow ,
+       backgroundColor: value == 1 ? Colors.deepOrangeAccent : Colors.yellow ,
        body: new SafeArea(
            top: false,
            bottom: false,
@@ -166,7 +179,18 @@ class SignupPageState extends State<SignupPage> {
              child: new ListView(
                padding: new EdgeInsets.all(20.0),
                children: <Widget>[
-                 value == "1" ? center:center2,
+                 //icon
+                 value == 1 ? center:center2,
+                 new TextFormField(
+                   decoration: new InputDecoration(
+                     icon: new Icon(Icons.supervised_user_circle),
+                     hintText: 'Enter Name',
+                     labelText: 'Name',
+                   ),
+                   keyboardType: TextInputType.text,
+                   onSaved: (String value) {email_pass.name = value;},
+                   validator: _validateName,
+                 ),
                  new TextFormField(
                     decoration: new InputDecoration(
                       icon: new Icon(Icons.person),
@@ -175,7 +199,7 @@ class SignupPageState extends State<SignupPage> {
                     ),
                    keyboardType: TextInputType.emailAddress,
                    onSaved: (String value) {email_pass.email = value;},
-                   validator: _validateName,
+                   validator: _validateEmail,
                  ),
                  //new Padding(padding: new EdgeInsets.symmetric(vertical: 20.0)),
                  new TextFormField(
@@ -209,7 +233,7 @@ class SignupPageState extends State<SignupPage> {
                          child: new RaisedButton(
                            child: const Text('Register'),
                            onPressed: _handleSubmitted,
-                           splashColor: value == "1" ? Colors.deepOrangeAccent : Colors.yellow,
+                           splashColor: value == 1 ? Colors.deepOrangeAccent : Colors.yellow,
                          ),
                        ),
                       new Padding(padding: new EdgeInsets.only(left: 100.0)),
@@ -218,7 +242,7 @@ class SignupPageState extends State<SignupPage> {
                       child: new RaisedButton(
                       child: const Text('Login'),
                       onPressed: _handleLogin,
-                      splashColor: value == "1" ? Colors.deepOrangeAccent : Colors.yellow,
+                      splashColor: value == 1 ? Colors.deepOrangeAccent : Colors.yellow,
                     ),
                   ),
                 ],
@@ -262,7 +286,7 @@ class SignupPageState extends State<SignupPage> {
       showInSnackBar("Signup successful!");
       loadOnce(auth);
       //# TODO Set auth and user values along with token to preferences.
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new AttendanceScreen()));
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new BarcodeScan()));
 
     } catch (e) {
       debugPrint(e.toString());
@@ -289,11 +313,12 @@ class SignupPageState extends State<SignupPage> {
           .instance.signInWithEmailAndPassword(email: email_pass.email,
           password: email_pass.password);
 
+
       debugPrint(user.toString());
       showInSnackBar("Login successful!");
       loadOnce(user);
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) => new AttendanceScreen()));
+          builder: (BuildContext context) => new BarcodeScan()));
 
     } catch (e) {
       showInSnackBar(e.message);
@@ -316,11 +341,13 @@ class SignupPageState extends State<SignupPage> {
   }
 
   Future loadOnce(user) async {
-
+    debugPrint(user.toString()+ "token:");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('Auth', true);
     prefs.setString('email', user.email.toString());
     prefs.setString('User', user.uid.toString());
+    prefs.setInt('Role', value);
+    prefs.setString('Name',email_pass.name);
 //    prefs.setString('token', user.token.toString());
 //    debugPrint('run success');
   }
