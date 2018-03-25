@@ -4,7 +4,6 @@ import 'package:attendance_assistant/pages/live_help.dart';
 import 'package:attendance_assistant/pages/qr_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/services.dart';
 
 
 class BarcodeScan extends StatefulWidget {
@@ -17,7 +16,6 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  get Name => null;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +43,7 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
                     final int role = snapshot.requireData.getInt('Role') ?? '';
                     final String name = snapshot.requireData.getString('Name') ?? '';
                     if(role == 1) {
+                      return null;
 //                      return new Center(
 //                        child: new Column(
 //                          children: <Widget>[
