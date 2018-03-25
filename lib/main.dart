@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:attendance_assistant/pages/attendance_screen.dart';
-import 'package:attendance_assistant/pages/landing_page.dart';
+import 'package:attendance_assistant/pages/barcode_scan.dart';
 import 'package:attendance_assistant/pages/live_help.dart';
 import 'package:attendance_assistant/pages/onboarding.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -24,7 +24,7 @@ getCookie() async {
   if (cookie == ''){
     runApp(new MaterialApp(home: new Onboarding(),));
   } else {
-    runApp(new MaterialApp(home: new AttendanceScreen(),));
+    runApp(new MaterialApp(home: new BarcodeScan(),));
   }
 }
 

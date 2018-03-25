@@ -1,31 +1,29 @@
 import 'dart:async';
 
 import 'package:attendance_assistant/pages/live_help.dart';
+import 'package:attendance_assistant/pages/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
 class AttendanceScreen extends StatefulWidget {
 
+
   @override
   AttendanceScreenState createState() => new AttendanceScreenState();
 
 }
 
-class AttendanceScreenState extends State<AttendanceScreen> {
+class AttendanceScreenState extends State<AttendanceScreen> with TickerProviderStateMixin{
+  int total = 100;
+  bool ctap = false;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-//  Future getCookie() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//    String email = prefs.getString('email');
-//    debugPrint(email.toString());
-//    return email;
-//  }
+
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-        home: new Scaffold(
+    return new Scaffold(
           appBar: new AppBar(
-              title: new Text("Attendance Page"),
+              title: new Text("Manual Attendance"),
               actions: <Widget>[
                 new IconButton(
                     icon: new Icon(Icons.help),
@@ -34,6 +32,40 @@ class AttendanceScreenState extends State<AttendanceScreen> {
                     }
                 ),
               ],
+          ),
+          body:
+          new GridView.count(
+            crossAxisCount: 5,
+            // Generate 100 Widgets that display their index in the List
+            children: new List.generate(total, (_index) {
+
+              return new Stack(
+
+                children: <Widget>[
+
+                  new Material(
+                    //color: ctap?  Colors.red : Colors.green,
+                    child: new InkWell(
+
+                      highlightColor: Colors.green,
+                      onLongPress: () {
+
+
+                      },
+//                    new Icon(Icons.verified_user),
+                      child: new Center(
+                        child: new Text(
+                          (_index+1).toString(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  //new Padding(padding: new EdgeInsets.only(top: 30.0)),
+                  new Icon(Icons.person,size: 30.0,color: ctap ? Colors.green : Colors.red,),
+
+                ],
+              );
+            }),
           ),
           drawer: new Drawer(
             child: new Column(
@@ -50,13 +82,23 @@ class AttendanceScreenState extends State<AttendanceScreen> {
                             return const Text('Loading...');
                           final String email = snapshot.requireData.getString('email') ?? '';
                           return new Text(email);
-                        }),
-                )
+                        }
+                        ),
+                ),
+                new MaterialButton(onPressed: (){
+                  getCookie();
+                }, child: new Text('Logout',textAlign: TextAlign.left,)),
               ],
             ),
           ),
-        )
-    );
+        );
+  }
+
+  Future getCookie() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('email', null);
+    Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new Onboarding()));
+    //debugPrint(cookie.toString());
   }
 
 }

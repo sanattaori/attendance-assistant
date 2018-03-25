@@ -77,7 +77,7 @@ class LandingPage extends StatelessWidget {
               color: Colors.yellowAccent,
               // ignore: invocation_of_non_function
               child: new InkWell(
-                onTap: ()=>  Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new SignupPage(value: "2",))),
+                onTap: ()=>  Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new SignupPage(value: 2,))),
                 child: new Center(
                   child: new Container(
                       child: new Column(
@@ -107,7 +107,7 @@ class LandingPage extends StatelessWidget {
                   color: Colors.deepOrangeAccent,
                   // ignore: invocation_of_non_function
                   child: new InkWell(
-                    onTap: ()=>  Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new SignupPage(value: "1",))),
+                    onTap: ()=>  Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new SignupPage(value: 1,))),
                     child: new Center(
                       child: new Container(
                           child: new Column(

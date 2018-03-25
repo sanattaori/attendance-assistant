@@ -14,6 +14,7 @@ final pages = [
       false
   ),
   new PageViewModel(
+
       const Color(0xFF65B0B4),
       'assets/ob/img_ob_att.png',
       'Build for Students and Teachers',
@@ -102,7 +103,7 @@ class Page extends StatelessWidget {
                     viewModel.val ? new RaisedButton(
                       onPressed: () {
                         loadOnce();
-                        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new LandingPage()));
+                        Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new LandingPage()));
                         },
                       child: new Text('Get Started!'),
                     ): null,

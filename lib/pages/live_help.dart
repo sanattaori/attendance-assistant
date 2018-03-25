@@ -16,6 +16,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final ThemeData kIOSTheme = new ThemeData(
   primarySwatch: Colors.orange,
@@ -61,7 +62,7 @@ class LiveHelp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: "Friendlychat",
+      title: "Get Live Help",
       theme: defaultTargetPlatform == TargetPlatform.iOS
           ? kIOSTheme
           : kDefaultTheme,
@@ -72,6 +73,7 @@ class LiveHelp extends StatelessWidget {
 
 @override
 class ChatMessage extends StatelessWidget {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   ChatMessage({this.snapshot, this.animation});
   final DataSnapshot snapshot;
   final Animation animation;
@@ -97,6 +99,7 @@ class ChatMessage extends StatelessWidget {
                   new Text(
                       snapshot.value['senderName'],
                       style: Theme.of(context).textTheme.subhead),
+
                   new Container(
                     margin: const EdgeInsets.only(top: 5.0),
                     child: snapshot.value['imageUrl'] != null ?
@@ -129,7 +132,7 @@ class ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("Friendlychat"),
+          title: new Text("Get Live Help"),
           elevation: Theme.of(context).platform == TargetPlatform.iOS ? 0.0 : 4.0,
         ),
         body: new Column(children: <Widget>[
@@ -233,5 +236,11 @@ class ChatScreenState extends State<ChatScreen> {
     });
     analytics.logEvent(name: 'send_message');
   }
+
+//  Future<String> getName() async {
+//    SharedPreferences prefs = await SharedPreferences.getInstance();
+//    String name = prefs.getString('Name');
+//    return name;
+//  }
 
 }
