@@ -4,7 +4,7 @@ import 'package:attendance_assistant/pages/live_help.dart';
 import 'package:attendance_assistant/pages/qr_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:qrcode_reader/QRCodeReader.dart';
 
 class BarcodeScan extends StatefulWidget {
   @override
@@ -12,8 +12,8 @@ class BarcodeScan extends StatefulWidget {
 }
 
 class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
-  String barcode = "";
 
+  Future<String> _barcodeString;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 
@@ -43,19 +43,32 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
                     final int role = snapshot.requireData.getInt('Role') ?? '';
                     final String name = snapshot.requireData.getString('Name') ?? '';
                     if(role == 1) {
-                      return null;
-//                      return new Center(
-//                        child: new Column(
-//                          children: <Widget>[
-//                            new Container(
-//                              child: new MaterialButton(
-//                                  onPressed: scan, child: new Text("Take Attendance")),
-//                              padding: const EdgeInsets.all(8.0),
-//                            ),
-//                            new Text(barcode),
-//                          ],
-//                        ),
-//                      );
+                      return new Center(
+                        child: new Column(
+                          children: <Widget>[
+                            new Container(
+                              child: new MaterialButton(
+                                  onPressed: (){
+                                    setState(() {
+                                      _barcodeString = new QRCodeReader()
+                                          .setAutoFocusIntervalInMs(200) // default 5000
+                                          .setForceAutoFocus(true) // default false
+                                          .setTorchEnabled(true) // default false
+                                          .setHandlePermissions(true) // default true
+                                          .setExecuteAfterPermissionGranted(true) // default true
+                                          .scan();
+                                    });
+                                  }, child: new Text("Take Attendance")),
+                              padding: const EdgeInsets.all(8.0),
+                            ),
+                            new FutureBuilder<String>(
+                                future: _barcodeString,
+                                builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                                  return new Text(snapshot.data != null ? snapshot.data : '');
+                                }),
+                          ],
+                        ),
+                      );
                       //scan qr
                     }
                     if(role == 2) {
@@ -133,5 +146,6 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
 //      setState(() => this.barcode = 'Unknown error: $e');
 //    }
 //  }
+
 
 }
