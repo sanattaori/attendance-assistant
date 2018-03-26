@@ -5,6 +5,7 @@ import 'package:attendance_assistant/pages/qr_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:qrcode_reader/QRCodeReader.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class BarcodeScan extends StatefulWidget {
   @override
@@ -12,7 +13,8 @@ class BarcodeScan extends StatefulWidget {
 }
 
 class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
-
+  List<String> nameList;
+  String result_names = '';
   Future<String> _barcodeString;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -22,7 +24,7 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
     return new MaterialApp(
         home: new Scaffold(
           appBar: new AppBar(
-            title: new Text("QR Scan"),
+            title: new Text("Attendance Assistant"),
             actions: <Widget>[
               new IconButton(
                   icon: new Icon(Icons.help),
@@ -64,7 +66,9 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
                             new FutureBuilder<String>(
                                 future: _barcodeString,
                                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                                  return new Text(snapshot.data != null ? snapshot.data : '');
+                                  result_names += snapshot.data.toString() + '\n';
+                                  nameList.add(snapshot.data.toString());
+                                  return new Text(snapshot.data != null ? 'Marked attendance: ' + result_names : '');
                                 }),
                           ],
                         ),
@@ -148,4 +152,26 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
 //  }
 
 
+}
+
+class NameEntries {
+  String key;
+  DateTime dateTime;
+
+  String names;
+
+  NameEntries(this.dateTime, this.names);
+
+  NameEntries.fromSnapshot(DataSnapshot snapshot)
+      : key = snapshot.key,
+        dateTime =
+        new DateTime.fromMillisecondsSinceEpoch(snapshot.value["date"]),
+        names = snapshot.value["names"];
+
+  toJson() {
+    return {
+      "date": dateTime.millisecondsSinceEpoch,
+      "names": names
+    };
+  }
 }
