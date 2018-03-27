@@ -30,6 +30,5 @@ getCookie() async {
 
 void main() {
   FirebaseDatabase.instance.setPersistenceEnabled(true);
-  reference.keepSynced(true);
   getCookie();
 }

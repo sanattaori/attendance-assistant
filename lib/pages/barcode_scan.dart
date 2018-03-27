@@ -7,20 +7,40 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:qrcode_reader/QRCodeReader.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+
+
+
 class BarcodeScan extends StatefulWidget {
+  BarcodeScan({Key key}) : super(key: key);
   @override
   BarcodeScanState createState() => new BarcodeScanState();
 }
 
 class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
-  List<String> nameList;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
+  List<String> list = [];
+  int i = 1;
+  // ignore: non_constant_identifier_names
   String result_names = '';
+  String names = '';
   Future<String> _barcodeString;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final reference = FirebaseDatabase.instance.reference().child('users/' + getUserId().toString());
 
+  void showInSnackBar(String value) {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+        content: new Text(value)
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return new MaterialApp(
         home: new Scaffold(
           appBar: new AppBar(
@@ -66,9 +86,22 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
                             new FutureBuilder<String>(
                                 future: _barcodeString,
                                 builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                                  result_names += snapshot.data.toString() + '\n';
-                                  nameList.add(snapshot.data.toString());
-                                  return new Text(snapshot.data != null ? 'Marked attendance: ' + result_names : '');
+
+                                  if(snapshot.data!= null){
+                                    if(names == snapshot.data.toString()) {
+                                      //showInSnackBar("Attendance already marked");
+                                    } else {
+                                      result_names += (i++).toString() + '. ' + snapshot.data.toString() + '\n';
+                                      list.add(snapshot.data.toString());
+                                      debugPrint('from not null' + list.toString());
+                                      debugPrint('from not null' + result_names.toString());
+                                      names = snapshot.data.toString();
+                                    }
+                                  }
+
+
+                                  debugPrint(result_names.toString());
+                                  return new Text(snapshot.data != null ? 'Marked attendance: \n' + result_names : '',style: new TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold,),);
                                 }),
                           ],
                         ),
@@ -152,6 +185,12 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
 //  }
 
 
+}
+
+Future<String> getUserId() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String uid = prefs.getString('User');
+  return uid;
 }
 
 class NameEntries {
