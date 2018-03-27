@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:qrcode_reader/QRCodeReader.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
+import 'package:intl/intl.dart';
 
 class BarcodeScan extends StatefulWidget {
   BarcodeScan({Key key}) : super(key: key);
@@ -21,7 +22,7 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
   Timer _timer;
   DateTime _time;
 
-
+  final DateFormat _formatter = new DateFormat.jm();
   @override
   void initState() {
     super.initState();
@@ -95,6 +96,25 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
                       return new Center(
                         child: new Column(
                           children: <Widget>[
+                              new Card(
+                              child: new Container(
+                                height: 50.0,
+                                color: Colors.white70,
+                                child: new Container(
+                                  padding: new EdgeInsets.all(10.0),
+                                  color: Colors.white30,
+                                  child: new Text(
+                                      _formatter.format(_time),
+                                      style: new TextStyle(
+                                        fontSize: 30.0,
+                                      ),
+                                      textAlign: TextAlign.center
+                                  ),
+                                ),
+
+                              ),
+                            ),
+
                             new Container(
                               child: new MaterialButton(
                                   onPressed: (){
@@ -145,18 +165,45 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
                                     }
                                   }
                                   debugPrint(result_names.toString());
-                                  return new Stack(
-                                    children: <Widget>[
-                                     new Text(snapshot.data != null ? 'Marked attendance: \n' + result_names : '',style: new TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold,),),
+                                    return new Center(
+                                      child: new Column(
+                                        children: <Widget>[
+                                          // time and no of students
 
-                                     new AnimatedCircularChart(
-                                      key: _chartKey,
-                                      size: const Size(300.0, 300.0),
-                                      initialChartData: data,
-                                      chartType: CircularChartType.Pie,
+                                          //Student list
+                                          new Row(
+                                            children: <Widget>[
+                                              new Text(snapshot.data != null ? 'Marked attendance: \n' + result_names : '',style: new TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold,),),
+                                            ],
+                                          ),
+                                          //chart
+                                          new Row(
+                                            children: <Widget>[
+                                              new AnimatedCircularChart(
+                                                key: _chartKey,
+                                                size: const Size(300.0, 300.0),
+                                                initialChartData: data,
+                                                chartType: CircularChartType.Pie,
+                                              ),
+                                            ],
+                                          ),
+
+                                        ],
                                       ),
-                                    ],
-                                  );
+                                    );
+
+//                                  return new Stack(
+//                                    children: <Widget>[
+//                                     new Text(snapshot.data != null ? 'Marked attendance: \n' + result_names : '',style: new TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold,),),
+//
+//                                     new AnimatedCircularChart(
+//                                      key: _chartKey,
+//                                      size: const Size(300.0, 300.0),
+//                                      initialChartData: data,
+//                                      chartType: CircularChartType.Pie,
+//                                      ),
+//                                    ],
+//                                  );
                                 }),
                           ],
                         ),
