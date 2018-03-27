@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:qrcode_reader/QRCodeReader.dart';
 import 'package:firebase_database/firebase_database.dart';
-
-
-
+import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 
 class BarcodeScan extends StatefulWidget {
   BarcodeScan({Key key}) : super(key: key);
@@ -17,26 +15,55 @@ class BarcodeScan extends StatefulWidget {
 }
 
 class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
+
+  double l = 4.0;
+  int i = 1;
+  Timer _timer;
+  DateTime _time;
+
+
   @override
   void initState() {
     super.initState();
+    _time = new DateTime.now();
+    const duration = const Duration(seconds: 1);
+    _timer = new Timer.periodic(duration, _updateTime);
   }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _updateTime(Timer timer) {
+    setState(() {
+      _time = new DateTime.now();
+    });
+  }
+
+  //charts
+  List<CircularStackEntry> data = <CircularStackEntry>[
+    new CircularStackEntry(
+      <CircularSegmentEntry>[
+        new CircularSegmentEntry(1.0, Colors.red[500], rankKey: 'Q1'),
+        new CircularSegmentEntry(0.0, Colors.green[500], rankKey: 'Q2'),
+      ],
+      rankKey: 'AttendanceChart',
+    ),
+  ];
 
 
   List<String> list = [];
-  int i = 1;
+
+
   // ignore: non_constant_identifier_names
   String result_names = '';
   String names = '';
   Future<String> _barcodeString;
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final reference = FirebaseDatabase.instance.reference().child('users/' + getUserId().toString());
-
-  void showInSnackBar(String value) {
-    Scaffold.of(context).showSnackBar(new SnackBar(
-        content: new Text(value)
-    ));
-  }
+  final GlobalKey<AnimatedCircularChartState> _chartKey = new GlobalKey<AnimatedCircularChartState>();
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +106,24 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
                                           .setHandlePermissions(true) // default true
                                           .setExecuteAfterPermissionGranted(true) // default true
                                           .scan();
+
+
+                                      //chart
+                                      List<CircularStackEntry> nextData = <CircularStackEntry>[
+                                        new CircularStackEntry(
+                                          <CircularSegmentEntry>[
+                                            new CircularSegmentEntry(
+                                                (i).toDouble(), Colors.red[400], rankKey: 'Q1'),
+                                            new CircularSegmentEntry(
+                                                (l - i).toDouble(), Colors.green[400], rankKey: 'Q2'),
+                                          ],
+                                          rankKey: 'AttendanceChart',
+                                        ),
+                                      ];
+
+                                      _chartKey.currentState.updateData(nextData);
+
+
                                     });
                                   }, child: new Text("Take Attendance")),
                               padding: const EdgeInsets.all(8.0),
@@ -96,12 +141,22 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
                                       debugPrint('from not null' + list.toString());
                                       debugPrint('from not null' + result_names.toString());
                                       names = snapshot.data.toString();
+                                      changeChart();
                                     }
                                   }
-
-
                                   debugPrint(result_names.toString());
-                                  return new Text(snapshot.data != null ? 'Marked attendance: \n' + result_names : '',style: new TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold,),);
+                                  return new Stack(
+                                    children: <Widget>[
+                                     new Text(snapshot.data != null ? 'Marked attendance: \n' + result_names : '',style: new TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold,),),
+
+                                     new AnimatedCircularChart(
+                                      key: _chartKey,
+                                      size: const Size(300.0, 300.0),
+                                      initialChartData: data,
+                                      chartType: CircularChartType.Pie,
+                                      ),
+                                    ],
+                                  );
                                 }),
                           ],
                         ),
@@ -162,6 +217,13 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
     prefs.setString('email', null);
     Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (BuildContext context) => new LandingPage()));
     //debugPrint(cookie.toString());
+  }
+
+  void changeChart() {
+    //charts
+
+
+
   }
 
 
