@@ -21,7 +21,7 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
   int i = 1;
   Timer _timer;
   DateTime _time;
-
+  final TextEditingController _controller = new TextEditingController();
   final DateFormat _formatter = new DateFormat.jm();
   @override
   void initState() {
@@ -114,7 +114,6 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
 
                               ),
                             ),
-
                             new Container(
                               child: new MaterialButton(
                                   onPressed: (){
@@ -145,7 +144,7 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
 
 
                                     });
-                                  }, child: new Text("Take Attendance")),
+                                  }, child: new Text("Take Attendance"),color: Colors.blueAccent,),
                               padding: const EdgeInsets.all(8.0),
                             ),
                             new FutureBuilder<String>(
@@ -167,6 +166,7 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
                                   debugPrint(result_names.toString());
                                     return new Center(
                                       child: new Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
                                           // time and no of students
 
@@ -181,13 +181,13 @@ class BarcodeScanState extends State<BarcodeScan> with TickerProviderStateMixin{
                                             children: <Widget>[
                                               new AnimatedCircularChart(
                                                 key: _chartKey,
-                                                size: const Size(300.0, 300.0),
+                                                size: const Size(250.0, 250.0),
                                                 initialChartData: data,
                                                 chartType: CircularChartType.Pie,
                                               ),
                                             ],
                                           ),
-
+                                          new Padding(padding: new EdgeInsets.only(top: 8.0)),
                                         ],
                                       ),
                                     );
