@@ -1,15 +1,14 @@
-# Contribution Guidelines
+# How to contribute
+We welcome contributions from the community and are pleased to have them.  Please follow this guide when logging issues or making code changes.
 
-Please ensure your pull request adheres to the following guidelines:
+## Logging Issues
+All issues should be created using the [new issue form](https://github.com/hapijs/good/issues/new).  Clearly describe the issue including steps to reproduce if there are any.  Also, make sure to indicate the earliest version that has the issue being reported.
 
-- Alphabetize your entry.
-- Search previous suggestions before making a new one, as yours may be a duplicate.
-- Suggested READMEs should be beautiful or stand out in some way.
-- Make an individual pull request for each suggestion.
-- New categories, or improvements to the existing categorization are welcome.
-- Keep descriptions short and simple, but descriptive.
-- Start the description with a capital and end with a full stop/period.
-- Check your spelling and grammar.
-- Make sure your text editor is set to remove trailing whitespace.
+## Patching Code
+Code changes are welcome and should follow the guidelines below.
 
-Thank you for your suggestions!
+* Fork the repository on GitHub.
+* Fix the issue ensuring that your code follows the [style guide](https://github.com/hapijs/contrib/blob/master/Style.md).
+* Add tests for your new code ensuring that you have 100% code coverage (we can help you reach 100% but will not merge without it).
+    * Run `npm run test` to generate a report of test coverage
+* [Pull requests](http://help.github.com/send-pull-requests/) should be made to the [master branch](https://github.com/spumko/good/tree/master).
