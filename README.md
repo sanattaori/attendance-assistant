@@ -16,12 +16,21 @@ You can also contribute to this project just go through
 
 ## Screenshots
 
-- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/1.png)
-- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/2.png)
-- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/3.png)
-- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/4.png)
-- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/5.png)
-- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/6.png)
+<div style="text-align: center"><table><tr>
+    <td style="text-align: center">
+        <img src="https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshots/1.png" width="200" />
+    </td>
+    <td style="text-align: center">
+        <img src="https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshots/3.png" width="200"/>
+    </td>
+    <td style="text-align: center">
+        <img src="https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshots/4.png" width="200"/>
+    </td>
+    <td style="text-align: center">
+        <img src="https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshots/5.png" width="200"/>
+    </td>
+
+</tr></table></div>
 
 
 ## License
