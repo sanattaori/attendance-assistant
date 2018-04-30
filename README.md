@@ -14,6 +14,16 @@ I would be working more to make the project efficient and nicer and complete as 
 You can also contribute to this project just go through 
 [Contribution Guidelines](https://github.com/sanattaori/attendance-assistant/blob/master/CONTRIBUTING.md)
 
+## Screenshots
+
+- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/1.png)
+- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/2.png)
+- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/3.png)
+- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/4.png)
+- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/5.png)
+- ![](https://raw.githubusercontent.com/sanattaori/attendance-assistant/master/screenshot/6.png)
+
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
