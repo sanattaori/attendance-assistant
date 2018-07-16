@@ -11,8 +11,6 @@ Teacher captures barcode from student, barcode will be updated every 5 second, o
 The project is not completed yet, To explore flutter framework, I developed a small android application which helps manage attendance data. It is not a complete functioning project, some very basic functionalities have been implemented as an initiative to understand dart programming and flutter architecture.
 
 I would be working more to make the project efficient and nicer and complete as and when time permits.
-You can also contribute to this project just go through 
-[Contribution Guidelines](https://github.com/sanattaori/attendance-assistant/blob/master/CONTRIBUTING.md)
 
 ## Screenshots
 
